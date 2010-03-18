@@ -361,13 +361,16 @@ class Tvdb:
             self.config['cache_location'] = cache
         else:
             self.config['cache_enabled'] = False
+            self.config['cache_location'] = self._getTempDir()
 
         if self.config['cache_enabled']:
             self.urlopener = urllib2.build_opener(
                 CacheHandler(self.config['cache_location'])
             )
         else:
-            self.urlopener = urllib2.build_opener()
+            self.urlopener = urllib2.build_opener(
+                CacheHandler(self.config['cache_location'], 1)
+            )
 
         self.config['banners_enabled'] = banners
         self.config['actors_enabled'] = actors
